@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}添加设备{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">添加新设备</h4>
+                </div>
+                <div class="card-body">
+                    <!-- 表单开始 -->
+                    <form method="POST" action="{{ url_for('add_device') }}">
+                        {{ form.hidden_tag() }}
+
+                        <!-- 设备名称 -->
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control", placeholder="请输入设备名称（如示波器）") }}
+                            {% if form.name.errors %}
+                                <div class="text-danger">{{ form.name.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 提交按钮 -->
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">返回仪表盘</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

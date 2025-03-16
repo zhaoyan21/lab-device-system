@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}仪器仪表盘{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h2>仪器列表</h2>
+    <form class="d-flex" method="GET" action="{{ url_for('dashboard') }}">
+        <input type="text" name="search" class="form-control me-2" placeholder="搜索仪器名称..." value="{{ request.args.get('search', '') }}">
+        <select name="status" class="form-select me-2" style="width: 150px;">
+            <option value="">所有状态</option>
+            <option value="available" {% if request.args.get('status') == 'available' %}selected{% endif %}>可用</option>
+            <option value="borrowed" {% if request.args.get('status') == 'borrowed' %}selected{% endif %}>已借出</option>
+            <option value="maintenance" {% if request.args.get('status') == 'maintenance' %}selected{% endif %}>维护中</option>
+        </select>
+        <button type="submit" class="btn btn-outline-primary">筛选</button>
+    </form>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for device in devices %}
+    <div class="col">
+        <div class="card h-100 shadow">
+            <div class="card-header">
+                <span class="badge bg-{{ 'success' if device.status == 'available' else 'danger' if device.status == 'borrowed' else 'warning'}}">
+                    {{ device.status }}
+                </span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ device.name }}</h5>
+            </div>
+            <div class="card-footer bg-transparent">
+            {% if device.status == 'available' %}
+            <a href="{{ url_for('borrow', device_id=device.id) }}" class="btn btn-sm btn-primary">借出</a>
+            {% else %}
+            <button class="btn btn-sm btn-secondary" disabled>不可借</button>
+            {% endif %}
+
+            {% if current_user.role == 'admin' %}
+            <div class="btn-group ms-2">
+                        <form role="menuitem" method="POST" action="{{ url_for('admin_device', device_id=device.id) }}">
+                         <button type="submit" class="dropdown-item">
+                             {% if device.status == 'available' %}
+                                 ▶ 标记为已借出
+                             {% elif device.status == 'borrowed' %}
+                                 ▶ 标记为维护中
+                             {% else %}
+                                  ▶ 恢复为可用
+                             {% endif %}
+                         </button>
+                     </form>
+
+            <!-- 删除设备 -->
+
+                     <form role="menuitem" method="POST" action="{{ url_for('delete_device', device_id=device.id) }}"
+                            onsubmit="return confirm('确认永久删除该设备？此操作不可逆！');">
+                         <button type="submit" class="dropdown-item text-danger">🗑 删除设备</button>
+                     </form>
+
+                </ul>
+            </div>
+         {% endif %}
+</div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info">没有找到符合条件的仪器</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
