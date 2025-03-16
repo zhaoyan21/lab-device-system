@@ -1,0 +1,13 @@
+/* 强制显示下拉菜单并修复层级 */
+.dropdown-menu {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1050 !important;  /* 确保高于导航栏等元素 */
+    position: absolute !important;
+}
+
+/* 确保父容器允许下拉菜单溢出 */
+.btn-group {
+    position: relative !important;
+}
