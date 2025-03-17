@@ -1,13 +1,12 @@
 
-from flask import Flask,render_template,request,redirect,url_for,make_response,json,abort,flash
-from Model import db,User,Device,Borrowrecord
-from flask_login import LoginManager,login_user,logout_user,login_required,current_user
-from forms import RegistrationForm,LoginForm,AddDeviceForm,BorrowForm
-from flask_bcrypt import Bcrypt
-from functools import wraps
 from datetime import datetime
-from __init__ import create_app
-
+from functools import wraps
+from flask import render_template, request, redirect, url_for, flash
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from app.Model import db, User, Device, Borrowrecord
+from app.__init__ import create_app
+from app.forms import RegistrationForm, LoginForm, AddDeviceForm, BorrowForm
 
 app = create_app()
 bcrypt = Bcrypt()

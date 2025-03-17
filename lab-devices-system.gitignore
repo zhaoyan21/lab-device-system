@@ -1,0 +1,24 @@
+# Python开发基础配置
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+
+# 数据库文件
+*.sqlite
+*.db
+
+# 环境文件
+.env
+.env.local
+
+# IDE配置
+.vscode/
+.idea/
+
+# 日志文件
+*.log
+
+/instance/*
+!/instance/.gitkeep
